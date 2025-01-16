@@ -6,41 +6,41 @@
 
 <div align="center" style="font-family: Arial, sans-serif;">
   <p>
-    <a href="#news" style="text-decoration: none; font-weight: bold;">新闻</a> •
-    <a href="#links" style="text-decoration: none; font-weight: bold;">链接</a> •
-    <a href="#getting-started" style="text-decoration: none; font-weight: bold;">快速开始</a> •
-    <a href="#evaluation" style="text-decoration: none; font-weight: bold;">评估</a> •
-    <a href="#citation" style="text-decoration: none; font-weight: bold;">引用</a> •
-    <a href="#acknowledgement" style="text-decoration: none; font-weight: bold;">致谢</a> 
+    <a href="#news" style="text-decoration: none; font-weight: bold;">News</a> •
+    <a href="#links" style="text-decoration: none; font-weight: bold;">Links</a> •
+    <a href="#getting-started" style="text-decoration: none; font-weight: bold;">Getting Started</a> •
+    <a href="#evaluation" style="text-decoration: none; font-weight: bold;">Evaluation</a> •
+    <a href="#citation" style="text-decoration: none; font-weight: bold;">Citation</a> •
+    <a href="#acknowledgement" style="text-decoration: none; font-weight: bold;">Acknowledgement</a> 
   </p>
 </div>
 
 </div>
 
 
-# 新闻
+# News
 
-- **[2025/01/10]** 🎉 我们已通过 [HuggingFace](https://huggingface.co/NovaSky-AI) 发布了我们的 Sky-T1-32B-Preview [模型](https://huggingface.co/NovaSky-AI/Sky-T1-32B-Preview) 和 [数据](https://huggingface.co/datasets/NovaSky-AI/Sky-T1_data_17k)！
-
-
-# 链接
-
-- 📜 [Sky-T1-32B-Preview 模型博客文章](https://novasky-ai.github.io/posts/sky-t1/)
-- 🤗 [Sky-T1-32B-Preview 模型](https://huggingface.co/NovaSky-AI)
-
-# 快速开始
-
-我们开源了用于数据整理、训练和评估 Sky-T1-32B-Preview 的代码和脚本，您可以在每个目录中找到更多详细信息。
-- ``/data``: 用于训练 Sky-T1-32B-Preview 的 17k 训练数据。我们还添加了来自 [STILL-2 模型](https://arxiv.org/pdf/2412.09413) 的科学和谜题部分。
-- ``skythought/tools``: Sky-T1 的训练数据整理和评估。为了生成我们的训练数据，我们使用了 QwQ-32B-Preview 模型。我们整理的数据混合涵盖了需要推理的多样领域，并通过拒绝采样程序来提高数据质量。
-- ``skythought/train``: Sky-T1 的训练脚本。我们使用 [Llama-Factory](https://github.com/hiyouga/LLaMA-Factory) 进行训练。模型经过 3 个周期的训练，学习率为 1e-5，批量大小为 96。我们的模型训练在 8 个 H100 GPU 上使用 DeepSpeed Zero-3 卸载完成，耗时约 19 小时，成本约为 450 美元（根据 Lambda Cloud 定价）。
+- **[2025/01/10]** 🎉 We have released our Sky-T1-32B-Preview [model](https://huggingface.co/NovaSky-AI/Sky-T1-32B-Preview) and [data](https://huggingface.co/datasets/NovaSky-AI/Sky-T1_data_17k) through [HuggingFace](https://huggingface.co/NovaSky-AI)!
 
 
-# 评估
-以下是我们在数学、编码和科学基准测试中对 Sky-T1-32B-Preview 模型的评估结果。
+# Links
 
-### 评估结果
-| 指标                | Sky-T1-32B-Preview | Qwen-2.5-32B-Instruct | QwQ   | o1-preview |
+- 📜 [Sky-T1-32B-Preview model Blog Post](https://novasky-ai.github.io/posts/sky-t1/)
+- 🤗 [Sky-T1-32B-Preview model](https://huggingface.co/NovaSky-AI)
+
+# Getting Started
+
+We open source the code and scripts we used for data curation, training, and evaluation for Sky-T1-32B-Preview, you can find more details in each directory.
+- ``/data``: The 17k training data used to train Sky-T1-32B-Preview. We also add the science and riddle portion from the [STILL-2 model](https://arxiv.org/pdf/2412.09413).
+- ``skythought/tools``: Training data curation and evaluation for Sky-T1. To generate our training data, we use the QwQ-32B-Preview model. We curate the data mixture to cover diverse domains that require reasoning, and a reject sampling procedure to improve the data quality.
+- ``skythought/train``: Training scripts for Sky-T1. We use [Llama-Factory](https://github.com/hiyouga/LLaMA-Factory) to perform training. The model was trained for 3 epochs with a learning rate of 1e-5 and a batch size of 96. Our model training was completed in 19 hours on 8 H100 GPUs using DeepSpeed Zero-3 offloading, costing approximately $450 as per Lambda Cloud pricing. 
+
+
+# Evaluation
+Following, we show our evaluation results for the Sky-T1-32B-Preview model across math, coding, and science benchmarks.
+
+### Evaluation results
+| Metric                | Sky-T1-32B-Preview | Qwen-2.5-32B-Instruct | QwQ   | o1-preview |
 |-----------------------|---------------------|--------|-------|------------|
 | Math500              | 82.4                    | 76.2    | 85.4 | 81.4       |
 | AIME2024             | 43.3                    | 16.7    | 50.0  | 40.0       |
@@ -51,13 +51,13 @@
 
 
 
-## 完全开源：共同推动进步
-我们相信开源协作推动进步，Sky-T1-32B-Preview 完全致力于赋能社区。我们开源所有细节（即数据、代码、模型权重），以便社区能够*轻松*复制和改进我们的结果：
+## Fully Open-source: Driving Progress Together
+We believe that open-source collaboration drives progress, and with Sky-T1-32B-Preview, we are fully committed to empowering the community. We open-source all details (i.e., data, codes, model weights) to enable the community to replicate and improve on our results *easily*:
 
 <table>
   <thead>
     <tr>
-      <th>模型</th>
+      <th>Model</th>
       <th style="background-color: #f2f2f2;"><div align="center">Sky-T1-32B-Preview</div></th>
       <th><div align="center">STILL-2</div></th>
       <th><div align="center">Journey</div></th>
@@ -67,7 +67,7 @@
   </thead>
   <tbody>
     <tr>
-      <td>数据</td>
+      <td>Data</td>
       <td style="background-color: #f2f2f2;"><div align="center">✅</div></td>
       <td><div align="center">✅</div></td>
       <td><div align="center">❌</div></td>
@@ -75,7 +75,7 @@
       <td><div align="center">❌</div></td>
     </tr>
     <tr>
-      <td>代码</td>
+      <td>Code</td>
       <td style="background-color: #f2f2f2;"><div align="center">✅</div></td>
       <td><div align="center">❌</div></td>
       <td><div align="center">❌</div></td>
@@ -83,7 +83,7 @@
       <td><div align="center">❌</div></td>
     </tr>
     <tr>
-      <td>报告</td>
+      <td>Report</td>
       <td style="background-color: #f2f2f2;"><div align="center">✅</div></td>
       <td><div align="center">✅</div></td>
       <td><div align="center">✅</div></td>
@@ -91,7 +91,7 @@
       <td><div align="center">❌</div></td>
     </tr>
     <tr>
-      <td>数学领域</td>
+      <td>Math domain</td>
       <td style="background-color: #f2f2f2;"><div align="center">✅</div></td>
       <td><div align="center">✅</div></td>
       <td><div align="center">✅</div></td>
@@ -99,7 +99,7 @@
       <td><div align="center">✅</div></td>
     </tr>
     <tr>
-      <td>编码领域</td>
+      <td>Coding domain</td>
       <td style="background-color: #f2f2f2;"><div align="center">✅</div></td>
       <td><div align="center">❌</div></td>
       <td><div align="center">❌</div></td>
@@ -107,7 +107,7 @@
       <td><div align="center">✅</div></td>
     </tr>
     <tr>
-      <td>模型权重</td>
+      <td>Model Weights</td>
       <td style="background-color: #f2f2f2;"><div align="center">✅</div></td>
       <td><div align="center">✅</div></td>
       <td><div align="center">❌</div></td>
@@ -117,8 +117,8 @@
   </tbody>
 </table>
 
-# 引用
-本仓库中的代码主要在以下文章中描述。如果您觉得本仓库有帮助，请考虑引用此工作。
+# Citation
+The code in this repository is mostly described in the post below. Please consider citing this work if you find the repository helpful. 
 
 ```bibtex
 @misc{sky_t1_2025,
@@ -130,7 +130,7 @@
 }
 ```
 
-# 致谢
-本工作在 [Berkeley Sky Computing Lab](https://sky.cs.berkeley.edu/) 完成，得到了 [Lambda Labs](https://lambdalabs.com/service/gpu-cloud?srsltid=AfmBOop5FnmEFTkavVtdZDsLWvHWNg6peXtat-OXJ9MW5GMNsk756PE5) 和 [Anyscale](https://www.anyscale.com/) 的出色计算支持。我们要感谢 [Still-2 Team](https://arxiv.org/pdf/2412.09413) 和 [Qwen Team](https://qwenlm.github.io/) 的 Junyang Lin 提供的宝贵学术反馈和支持。
+# Acknowledgement
+This work is done at [Berkeley Sky Computing Lab](https://sky.cs.berkeley.edu/), with the amazing compute support from [Lambda Labs](https://lambdalabs.com/service/gpu-cloud?srsltid=AfmBOop5FnmEFTkavVtdZDsLWvHWNg6peXtat-OXJ9MW5GMNsk756PE5) and [Anyscale](https://www.anyscale.com/). We would like to express our gratitude for the valuable academic feedback and support from the [Still-2 Team](https://arxiv.org/pdf/2412.09413), and Junyang Lin from the [Qwen Team](https://qwenlm.github.io/).
 
 
