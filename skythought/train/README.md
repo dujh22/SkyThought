@@ -6,6 +6,9 @@
 
 可进一步参照LLaMA-Factory/Readme完成相关运行环境的配置。
 
+注意需要把位置切换到SkyThought/skythought/train/LLaMA-Factory目录下一定！
+
+
 ### 步骤 1
 
 请将工具目录生成的数据路径或我们提供的数据路径，添加到 LLaMA-Factory/data/dataset_info.json 中 Sky-T1 条目的 file_name 字段。
@@ -23,7 +26,10 @@
 
 ### 步骤 2：运行
 
+
+
 `FORCE_TORCHRUN=1 NNODES=1 NODE_RANK=0 MASTER_PORT=29501 llamafactory-cli train examples/train_full/qwen2_full_sft.yaml`
+
 
 在 8 个 H100 GPU 上从 32B 模型开始训练。感兴趣的读者可以参考 examples/train_full/qwen2_full_sft.yaml 中的详细设置。
 
@@ -51,3 +57,18 @@
    - 这是一个配置文件的路径，通常是一个 YAML 文件，包含了训练的详细配置参数，如模型架构、数据集路径、训练超参数等。`qwen2_full_sft.yaml` 可能是一个特定的训练配置文件。
 
 总结来说，这条命令是在单节点上使用 `torchrun` 启动 `llamafactory-cli` 工具进行训练，使用的配置文件是 `qwen2_full_sft.yaml`。
+
+---
+
+### 常见报错处理
+
+##### 1.无法连接到huggingface下载模型
+
+需要把模型手动下载到服务器本地。
+
+修改skythought/train/LLaMA-Factory/examples/train_full/qwen2_full_sft.yaml中的模型相关参数：
+
+```
+### model
+model_name_or_path: Qwen/Qwen2.5-32B-Instruct
+```
