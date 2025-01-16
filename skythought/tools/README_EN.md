@@ -1,30 +1,40 @@
-# 数据生成和评估工具
-本文档描述了 Sky-T1 的训练数据整理和评估脚本的步骤。
+# Data Generation and Evaluation Tools
 
-## 要求
-首先按如下方式创建环境。
+This document describes the steps to training data curation and evaluation scripts for Sky-T1.
+
+## Requirements
+
+First create the environment as follows.
+
 ```shell
 conda create -n eval python==3.10
 conda activate eval 
 pip install -r requirements.txt
 ```
 
-要运行 OpenAI 模型，请导出 OpenAI 密钥。
+For running OpenAI model, export the OpenAI key.
+
 ```shell
 export OPENAI_API_KEY={openai_api_key}
 ```
 
-## 训练数据整理
-### 步骤 0（可选，仅适用于 NUMINA 数学数据集）：标记 NUMINA 的数学难度
-将一个或多个 OPENAI_API_KEY 放在一个文件中，例如 keys.txt（每行一个）。如果有多个密钥，脚本将以循环方式使用它们以加快生成速度。使用 GPT-4o-mini 标记数学难度：
-#### 示例用法：
+## Training Data Curation
+
+### Step 0 (Optional, only for NUMINA math dataset): Label Math Difficulty from NUMINA
+
+Put one or multiple OPENAI_API_KEY in a file, e.g. keys.txt (one per line). If there is more than one key, the script will use them in a round-robin way to speed up generation. Label Math difficulty using GPT-4o-mini:
+
+#### Example usage:
+
 ```
 python label_math_difficulty.py --source [amc_aime, math, olympiads] --keys keys.txt
 ```
-预期输出为 labeled_source_0_-1.json。我们还提供了在 labeled_numina_difficulty 文件夹下下载这些文件的说明（从 HuggingFace 下载）。
 
-### 步骤 1：数据推理
-在多个数据集上推理 QwQ 的结果。在预览版本中，我们使用以下数据集的数据。
+The expected output is labeled_source_0_-1.json. We also provide instructions to download these files under the labeled_numina_difficulty folder (Download from HuggingFace).
+
+### Step 1: Data Inference
+
+Inference the results from QwQ on several datasets. In preview version, we use data from the following dataset.
 
 ```shell
 python inference_and_check.py --dataset APPS --model Qwen/QwQ-32B-Preview --tp 8 --max_tokens 16384 --split test --source all --result-dir $SKYT_HOME/data --inference
@@ -40,30 +50,39 @@ python inference_and_check.py --dataset NUMINA --model Qwen/QwQ-32B-Preview --tp
 python inference_and_check.py --dataset NUMINA --model Qwen/QwQ-32B-Preview --tp 8 --max_tokens 16384 --split train --source olympiads --end 20000 --filter-difficulty --result-dir $SKYT_HOME/data --inference
 ```
 
-### 步骤 2：格式化响应
-在获得训练数据的列表文件后，将其转换为统一格式（注意：这使用 GPT-4o-mini 重写。输出很长，我们的预览数据大约需要 100 美元）。
+### Step 2: Format the response
+
+After obtaining a list file for training data, convert them to a unified format (Note: This uses GPT-4o-mini to rewrite. The output is long and takes ~100 dollars for our preview data).
+
 ```shell
 python convert_format.py --input_dir $SKYT_HOME/data --keys keys.txt
 ```
 
-### 步骤 3：对格式化数据进行拒绝采样（使用前面脚本的示例用法）
-```shell 
+### Step 3: Reject Sampling on the formatted data (Example Usage with previous script)
+
+```shell
 python inference_and_check.py --dataset APPS --model Qwen/QwQ-32B-Preview --tp 8 --max_tokens 16384 --split test --source all --result-dir $SKYT_HOME/data --check
 ```
-其他数据集类似。
 
-### 转换为 ShareGPT 格式进行训练
-在获得多个转换文件后，将它们合并在一起并转换为 ShareGPT 格式以进行训练。在我们的预览模型中，我们还添加了 [STILL-2 模型](https://arxiv.org/pdf/2412.09413) 中的科学和谜题部分，感兴趣的读者可以下载他们的数据部分并简单地连接到上面获得的数据。
+Similar for other datasets.
+
+### Convert to ShareGPT format for training
+
+After obtaining multiple converted files, merge them together and convert to the ShareGPT format to perform training. In our preview model, we also add the science and riddle portion from the [STILL-2 model](https://arxiv.org/pdf/2412.09413), where interested readers can download their part of data and simply concatenating to the data obtained above.
+
 ```shell
 python convert_to_data.py --input_dir $SKYT_HOME/data --output $SKYT_HOME/data/train_data.json
 ```
 
-## 生成和评估
-文件 `inference_and_check.py` 提供了生成序列（例如，用于蒸馏或基准评估）和检查生成的解决方案是否正确（例如，用于拒绝采样或基准评估）的便捷方法。
+## Generation and Evaluation
 
-### 蒸馏和拒绝采样
-目前我们支持从各种自托管模型对 NUMINA、APPS 和 TACO 数据集进行蒸馏和拒绝采样。对于 NUMINA，来源可以是 `[amc_aime, math, olympiads]` 中的一个。
-#### 示例用法
+The file `inference_and_check.py` provides convenient methods for generating sequences (e.g., for distillation or benchmark evaluation) and checking whether the generated solutions are correct (e.g., for reject sampling or benchmark evaluation).
+
+### Distill and Reject Sampling
+
+Currently we support distill and reject sampling from various self-hosted models for NUMINA, APPS, and TACO datasets. For NUMINA, the source can be one from `[amc_aime, math, olympiads]`.
+
+#### Example Usage
 
 ```shell
 python inference_and_check.py --dataset APPS --model Qwen/QwQ-32B-Preview --tp 8 --max_tokens 16384 --split test --source all --result-dir $SKYT_HOME/data
@@ -80,16 +99,19 @@ python inference_and_check.py --dataset NUMINA --model Qwen/QwQ-32B-Preview --tp
 ```
 
 #### TODO
-添加 Best-of-N 采样。
 
-### 基准评估
-我们提供了一个包装脚本 `eval.py` 来方便地运行推理基准测试。我们目前支持 `AIME`、`MATH500`、`GPQADiamond` 和 `MMLU`。此脚本可用于启动多个基准测试的评估，然后汇总并记录所有基准测试的准确性。
+Add Best-of-N sampling.
 
-**注意**：`GPQADiamond` 数据集是受限的，需要首先在此 Huggingface [链接](https://huggingface.co/datasets/Idavidrein/gpqa) 上获得访问权限（立即授予），然后在终端会话中使用 `huggingface-cli login` 登录到你的 Huggingface 账户。
+### Benchmark Evaluations
 
-#### 示例用法
+We provide a wrapper script `eval.py` to conveniently run reasoning benchmarks. We currently support `AIME`, `MATH500`, `GPQADiamond`, and `MMLU`. This script can be used to launch evaluations for multiple benchmarks, then aggregate and log the accuracy for all benchmarks.
+
+**Note**: The `GPQADiamond` dataset is gated and requires first receiving access at this Huggingface [link](https://huggingface.co/datasets/Idavidrein/gpqa) (which is granted immediately), then logging into your Huggingface account in your terminal session with `huggingface-cli login`.
+
+#### Example Usage
+
 ```shell
 python eval.py --model Qwen/QwQ-32B-Preview --evals=AIME,MATH500,GPQADiamond --tp=8 --output_file=results.txt
 ```
-    
-示例结果：`{"AIME": <aime_accuracy>, "MATH500": <math500_accuracy>, "GPQADiamond": <gpqa_diamond_accuracy>}` 
+
+Example result: `{"AIME": <aime_accuracy>, "MATH500": <math500_accuracy>, "GPQADiamond": <gpqa_diamond_accuracy>}`
