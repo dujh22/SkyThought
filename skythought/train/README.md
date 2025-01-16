@@ -2,6 +2,10 @@
 
 我们使用 [LLaMA-Factory](https://github.com/hiyouga/LLaMA-Factory) 的一个分支进行训练。
 
+### 步骤0
+
+可进一步参照LLaMA-Factory/Readme完成相关运行环境的配置。
+
 ### 步骤 1
 
 请将工具目录生成的数据路径或我们提供的数据路径，添加到 LLaMA-Factory/data/dataset_info.json 中 Sky-T1 条目的 file_name 字段。
