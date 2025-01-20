@@ -8,6 +8,38 @@
 
 注意需要把位置切换到SkyThought/skythought/train/LLaMA-Factory目录下一定！
 
+配置环境：
+
+安装 LLaMA Factory
+
+拉取代码
+
+```
+git clone --depth 1 https://github.com/hiyouga/LLaMA-Factory.git
+```
+
+环境创建
+
+-- 前提安装anconda,避免跟其他软件的环境起冲突,单独建一个虚拟环境
+
+```
+conda create -n llamafactory  python=3.11
+conda  activate llamafactory
+```
+
+安装依赖包
+
+```
+cd LLaMA-Factory
+pip install -e ".[torch,metrics]"
+```
+
+LLaMA Board 可视化微调（由 Gradio 驱动）
+
+```
+llamafactory-cli webui
+```
+
 
 ### 步骤 1
 
@@ -23,13 +55,11 @@
     },
 ```
 
-
 ### 步骤 2：运行
 
-
-
-`FORCE_TORCHRUN=1 NNODES=1 NODE_RANK=0 MASTER_PORT=29501 llamafactory-cli train examples/train_full/qwen2_full_sft.yaml`
-
+```
+FORCE_TORCHRUN=1 NNODES=1 NODE_RANK=0 MASTER_PORT=29501 llamafactory-cli train examples/train_full/qwen2_full_sft.yaml
+```
 
 在 8 个 H100 GPU 上从 32B 模型开始训练。感兴趣的读者可以参考 examples/train_full/qwen2_full_sft.yaml 中的详细设置。
 
@@ -71,4 +101,22 @@
 ```
 ### model
 model_name_or_path: Qwen/Qwen2.5-32B-Instruct
+```
+
+##### 2.-bash: llamafactory-cli: command not found
+
+出现"`-bash: llamafactory-cli: command not found`"错误的原因通常是因为系统找不到名为 `llamafactory-cli`的可执行文件。以下是一些可能的解决方案：
+
+**检查安装**：确保 `llamafactory-cli`已经正确安装。你可以尝试重新安装或检查安装路径。
+
+**检查路径**：确认 `llamafactory-cli`所在的目录已经包含在你的 `PATH`环境变量中。你可以通过以下命令查看 `PATH`：
+
+```
+echo $PATH
+```
+
+如果 `llamafactory-cli`不在这些路径中，你需要将其所在目录添加到 `PATH`中。例如：
+
+```
+export PATH=$PATH:/workspace/dujh22/SkyThought/skythought/train/LLaMA-Factory
 ```
