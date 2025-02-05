@@ -40,6 +40,11 @@ LLaMA Board 可视化微调（由 Gradio 驱动）
 llamafactory-cli webui
 ```
 
+可能还存在缺失的安装包：
+
+pip3 install deepspeed
+
+pip install wandb
 
 ### 步骤 1
 
@@ -56,6 +61,15 @@ llamafactory-cli webui
 ```
 
 ### 步骤 2：运行
+
+首先登录wandb
+
+```
+wandb login
+76ea5b2b06f6f9a718116bb3ec0bd54936f2fded
+```
+
+然后进行训练
 
 ```
 FORCE_TORCHRUN=1 NNODES=1 NODE_RANK=0 MASTER_PORT=29501 llamafactory-cli train examples/train_full/qwen2_full_sft.yaml
@@ -105,18 +119,16 @@ model_name_or_path: Qwen/Qwen2.5-32B-Instruct
 
 ##### 2.-bash: llamafactory-cli: command not found
 
-出现"`-bash: llamafactory-cli: command not found`"错误的原因通常是因为系统找不到名为 `llamafactory-cli`的可执行文件。以下是一些可能的解决方案：
+出现"`-bash: llamafactory-cli: command not found`"错误的原因通常是因为系统找不到名为 `llamafactory-cli`的可执行文件。可以先按照llama-factory项目的一般安装要求完成相关安装，然后再按照本项目要求完成相关环境配置。
 
-**检查安装**：确保 `llamafactory-cli`已经正确安装。你可以尝试重新安装或检查安装路径。
+##### 3. AssertionError: no_sync context manager is incompatible with gradient partitioning logic of ZeRO stage 3
 
-**检查路径**：确认 `llamafactory-cli`所在的目录已经包含在你的 `PATH`环境变量中。你可以通过以下命令查看 `PATH`：
+不是所有的模型都支持deepspeed3！！
 
-```
-echo $PATH
-```
+解决方法：替换deepspeed版本 **pip** install deepspeed==0.15.4
 
-如果 `llamafactory-cli`不在这些路径中，你需要将其所在目录添加到 `PATH`中。例如：
-
-```
-export PATH=$PATH:/workspace/dujh22/SkyThought/skythought/train/LLaMA-Factory
-```
+这个错误表明你当前的配置存在冲突:你正在使用 DeepSpeed ZeRO stage 3 优化，同时代码尝试使用 no_sync context manager 进行梯度累积
+这两个功能是不兼容的，因为: ZeRO stage 3 会对梯度进行分区处理，而 no_sync 管理器试图阻止梯度同步，这与 ZeRO stage 3 的工作方式冲突
+解决方案:
+1.修改 DeepSpeed 配置，使用较低的 ZeRO stage (比如 stage 2 或 1)
+2.或者调整训练参数，避免使用梯度累积（gradient accumulation）:

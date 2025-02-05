@@ -16,9 +16,9 @@ overwrite_cache: true
 preprocessing_num_workers: 16
 
 ### output
-output_dir: saves/Sky-T1-32B-Preview/full/original
+output_dir: /workspace/malay/dujinhua/model/o1/saves/Sky-T1-32B-Preview/full/original
 logging_steps: 1
-save_steps: 100
+save_steps: 1500
 plot_loss: true
 
 ### train

@@ -13,13 +13,21 @@ eval_to_split = {
 }
 
 def parse_arguments():
+    # 创建一个ArgumentParser对象，用于处理命令行参数
     parser = argparse.ArgumentParser(description="Process model path, prompt format, and evals to run.")
+    # 添加一个命令行参数，用于指定模型的路径
     parser.add_argument("--model", required=True, type=str, help="Path to the model.")
+    # 添加一个命令行参数，用于指定要运行的evals
     parser.add_argument("--evals", required=True, type=str, help="Comma-separated list of evals to run (no spaces).")
+    # 添加一个命令行参数，用于指定Tensor Parallelism Degree, tp（Tensor Parallelism Degree）通常用于指定张量并行度的程度。在深度学习中，尤其是在使用大型模型时，张量并行可以帮助将模型的计算分散到多个 GPU 上，从而提高训练效率和速度。设置 tp 的值为 8 意味着模型的计算将被分配到 8 个 GPU 上进行并行处理。
     parser.add_argument("--tp", type=int, default=8, help="Tensor Parallelism Degree")
+    # 添加一个命令行参数，用于指定是否过滤难度
     parser.add_argument("--filter-difficulty", action="store_true", help="Filter difficulty.")
+    # 添加一个命令行参数，用于指定数据集的来源
     parser.add_argument("--source", type=str, help="Source for the dataset.")
+    # 添加一个命令行参数，用于指定输出结果的文件
     parser.add_argument("--output_file", required=True, type=str, help="Output file to write results to.")
+    # 返回解析后的命令行参数
     return parser.parse_args()
 
 def extract_accuracy_from_output(output):

@@ -1,4 +1,5 @@
 SYSTEM_PROMPT = {
+    "/workspace/dujh22/models/Qwen2.5-32B-Instruct": "You are a helpful and harmless assistant. You are Qwen developed by Alibaba. You should think step-by-step.",
     "Qwen/Qwen2-7B-Instruct": "You are a helpful and harmless assistant. You are Qwen developed by Alibaba. You should think step-by-step.",
     "Qwen/QwQ-32B-Preview": "You are a helpful and harmless assistant. You are Qwen developed by Alibaba. You should think step-by-step.",
     "Qwen/Qwen2.5-72B-Instruct": "You are a helpful and harmless assistant. You are Qwen developed by Alibaba. You should think step-by-step.",
@@ -29,6 +30,7 @@ SYSTEM_PROMPT = {
 }
 
 MODEL_TO_NAME = {
+    "/workspace/dujh22/models/Qwen2.5-32B-Instruct": "Qwen2.5-32B-Instruct", 
     "Qwen/Qwen2-7B-Instruct": "Qwen2-7B-Instruct",
     "Qwen/QwQ-32B-Preview": "QwQ-32B-Preview",
     "Qwen/Qwen2.5-72B-Instruct": "Qwen2.5-72B-Instruct",
