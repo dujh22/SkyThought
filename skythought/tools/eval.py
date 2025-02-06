@@ -84,7 +84,7 @@ def main():
         try:
             with subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True) as proc:
                 output_lines = []
-                for line in proc.stdout:
+                for line in proc.stdout: # proc.stdout是一个可迭代对象，它会在子进程的输出中产生每一行。
                     print(line, end="")  # Stream output to the console
                     output_lines.append(line)
                     all_logs += line
