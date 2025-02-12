@@ -414,10 +414,7 @@ class APPSTaskHandler(TaskHandler):
         return conversations
 
     def load_and_filter_dataset(self, start, end, split="train", source=None, filter_difficulty=False, args=None):
-        if source == None: # 新增，为了测试
-            dataset = load_dataset("codeparrot/apps", trust_remote_code=True)
-        else: # 新增，为了测试
-            dataset = load_dataset(source, trust_remote_code=True) # 新增，为了测试
+        dataset = load_dataset("codeparrot/apps", trust_remote_code=True)
         train_data = dataset[split].to_pandas()
         if not filter_difficulty:
             return train_data.iloc[start:end] if end > 0 else train_data.iloc[start:]
